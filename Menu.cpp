@@ -1,177 +1,332 @@
-
-#include "Snake.h"
-
+﻿#pragma execution_character_set( "utf-8" )
+#include "Menu.h"
+#include "GamePlay.h"
+#include "SaveGame.h"
 using namespace std;
 
-void firstWord() {
+int MODE;
 
+// Dem nguoc thoi gian
+void CountDown() {
+	setFont(L"Terminal", 12, 24);
+	fixConsoleWindow();
+	SetConsoleOutputCP(65001);
+	if (SOUND) {
+		PlaySoundW(L"resources/sfx/countdown.wav", NULL, SND_ASYNC);
+	}
 	setOutputColor(Green, White);
-	GoToXY(70 - 45, 0); cout << "~( :)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n";
-	GoToXY(70 - 45, 1); cout << "  SSSSSSSS   NNN      NN        A       KK    KKK  EEEEEEEEE\n";
-	GoToXY(70 - 45, 2); cout << " SS      SS  NN N     NN       A A      KK   KK    EE\n";
-	GoToXY(70 - 45, 3); cout << " SS          NN  N    NN      A   A     KK  KK     EE\n";
-	GoToXY(70 - 45, 4); cout << "  SSSSSSSS   NN   N   NN     AAAAAAA    KKKKK      EEEEEEEEE\n";
-	GoToXY(70 - 45, 5); cout << "         SS  NN    N  NN    AA     AA   KK  KK     EE\n";
-	GoToXY(70 - 45, 6); cout << " SS      SS  NN     N NN   A         A  KK   KK    EE\n";
-	GoToXY(70 - 45, 7); cout << "  SSSSSSSS   NN      NNN  A           A KK    KKK  EEEEEEEEE\n";
-	setOutputColor(Green, White);
-	GoToXY(70 - 45, 8); cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<(: )~\n";
-	GoToXY(70 - 20, 9);
+	GoToXY(0, 15);
+	wcout << u8R"(
+                                                         ██████╗ 
+                                                         ╚════██╗
+                                                          █████╔╝
+                                                          ╚═══██╗
+                                                         ██████╔╝
+                                                         ╚═════╝ )";
 	Sleep(1000);
-	cout << "<= THE_SNAKE = >\n";
-	GoToXY(70 - 20, 10);
-	Sleep(1000);
-	cout << "team's member: \n";
-	Sleep(1000);
-	GoToXY(70 - 25, 11);
-	Sleep(500);
-	cout << "Pham Phat Loc     20127213\n";
-	GoToXY(70 - 25, 12);
-	Sleep(500);
-	cout << "Do Xuan An   20127404\n";
-	GoToXY(70 - 25, 13);
-	Sleep(500);
-	cout << "Pham Ngoc Quy        20127474\n";
-	GoToXY(70 - 25, 14);
-	Sleep(500);
-	cout << "Ngo Tan Tai   20127204\n";
-	GoToXY(70 - 25, 15);
-	system("Pause");
 	system("cls");
-	setOutputColor(White, White);
+	setOutputColor(Yellow, White);
+	GoToXY(0, 15);
+	wcout << u8R"(
+                                                         ██████╗ 
+                                                         ╚════██╗
+                                                          █████╔╝
+                                                         ██╔═══╝ 
+                                                         ███████╗
+                                                          ╚═════╝ )";
+	Sleep(1000);
+	system("cls");
+	setOutputColor(Red, White);
+	GoToXY(0, 15);
+	wcout << u8R"(
+                                                            ██╗
+                                                           ███║
+                                                           ╚██║
+                                                            ██║
+                                                            ██║
+                                                            ╚═╝ )";
+	Sleep(1000);
+	system("cls");
+	setOutputColor(Blue, White);
+	GoToXY(0, 15);
+	wcout << u8R"(
+                                          ███████╗████████╗ █████╗ ██████╗ ████████╗
+                                          ██╔════╝╚══██╔══╝██╔══██╗██╔══██╗╚══██╔══╝
+                                          ███████╗   ██║   ███████║██████╔╝   ██║   
+                                          ╚════██║   ██║   ██╔══██║██╔══██╗   ██║   
+                                          ███████║   ██║   ██║  ██║██║  ██║   ██║   
+                                          ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   )";
+	Sleep(1000);
+	system("cls");
+	setOutputColor(Black, White);
 }
 
-void printRound(int LEVEL_STATE) {
-	setOutputColor(Green, White);
-	GoToXY(50, 10);
-	cout << "ROUND: " << LEVEL_STATE;
-	setOutputColor(White, White);
+// Hien level tren PlayArea
+void UILevel(int x, int y) {
+	if (LEVEL == 1) {
+		GoToXY(x, y);
+		wcout << u8R"(░█░░░█▀▀░█░█░█▀▀░█░░░░░▀█░)";
+		GoToXY(x, y + 1);
+		wcout << u8R"(░█░░░█▀▀░▀▄▀░█▀▀░█░░░░░░█░)";
+		GoToXY(x, y + 2);
+		wcout << u8R"(░▀▀▀░▀▀▀░░▀░░▀▀▀░▀▀▀░░░▀▀▀)";
+	}
+	if (LEVEL == 2) {
+		GoToXY(x, y);
+		wcout << u8R"(░█░░░█▀▀░█░█░█▀▀░█░░░░░▀▀▄)";
+		GoToXY(x, y + 1);
+		wcout << u8R"(░█░░░█▀▀░▀▄▀░█▀▀░█░░░░░▄▀░)";
+		GoToXY(x, y + 2);
+		wcout << u8R"(░▀▀▀░▀▀▀░░▀░░▀▀▀░▀▀▀░░░▀▀▀)";
+	}
+	if (LEVEL == 3) {
+		GoToXY(x, y);
+		wcout << u8R"(░█░░░█▀▀░█░█░█▀▀░█░░░░░▀▀█)";
+		GoToXY(x, y + 1);
+		wcout << u8R"(░█░░░█▀▀░▀▄▀░█▀▀░█░░░░░░▀▄)";
+		GoToXY(x, y + 2);
+		wcout << u8R"(░▀▀▀░▀▀▀░░▀░░▀▀▀░▀▀▀░░░▀▀▀)";
+	}
+	if (LEVEL == 4) {
+		GoToXY(x, y);
+		wcout << u8R"(░█░░░█▀▀░█░█░█▀▀░█░░░░░█░█)";
+		GoToXY(x, y + 1);
+		wcout << u8R"(░█░░░█▀▀░▀▄▀░█▀▀░█░░░░░░▀█)";
+		GoToXY(x, y + 2);
+		wcout << u8R"(░▀▀▀░▀▀▀░░▀░░▀▀▀░▀▀▀░░░░░▀)";
+	}//.........................
 }
 
-void MainMenu() {
-	
-    char menu[4][10] = { "New", "Continue", "Setting", "Exit" };
-    int current = 0; // the index of the current option
-    char input; // the input from the user
-    int done = 0; // a flag to indicate whether the user has chosen to exit
+// Load Game Menu
+void menuLoadGame() {
+	// Variables
+	InitSavedData();
+	Point box{ 3, 11 };
+	int x = 18;
+	int selected = 1;
 
-    while (!done) {
-        // display the menu
-		GoToXY(50, 50);
-        printf("Menu:\n");
-		GoToXY(50, 51);
-        printf("----\n");
-		GoToXY(50, 52);
-        printf("Team member: \n");
-        for (int i = 0; i < 4; i++) {
-            if (i == current) {
-                printf("> %s <\n", menu[i]); // highlight the current option
-            }
-            else {
-                printf("  %s  \n", menu[i]); // display the other options normally
-            }
-        }
+	// Dram table
+	system("cls");
+	system("Color F0");
+	SetConsoleOutputCP(65001);
+	setFont(L"Terminal", 15, 18);
+	fixConsoleWindow();
+	GoToXY(x, 3);
+	wcout << u8R"(██       ██████   █████  ██████       ██████   █████  ███    ███ ███████)";
+	GoToXY(x, 3 + 1);
+	wcout << u8R"(██      ██    ██ ██   ██ ██   ██     ██       ██   ██ ████  ████ ██)";
+	GoToXY(x, 3 + 2);
+	wcout << u8R"(██      ██    ██ ███████ ██   ██     ██   ███ ███████ ██ ████ ██ █████)";
+	GoToXY(x, 3 + 3);
+	wcout << u8R"(██      ██    ██ ██   ██ ██   ██     ██    ██ ██   ██ ██  ██  ██ ██)";
+	GoToXY(x, 3 + 4);
+	wcout << u8R"(███████  ██████  ██   ██ ██████       ██████  ██   ██ ██      ██ ███████)";
+	GoToXY(x + 23, 9);
+	cout << "PRESS ESC TO RETURN MENU" << endl;
+	drawBox(box, 98, 25, Black);
+	drawBox(box, 98, 3, Black);
+	setOutputColor(Black, White);
+	GoToXY(10, 13);
+	cout << "SLOT";
+	GoToXY(32, 13);
+	cout << "NAME";
+	GoToXY(50, 13);
+	cout << "LEVEL";
+	GoToXY(65, 13);
+	cout << "SCORE";
+	GoToXY(85, 13);
+	cout << "DATE";
 
-        // read the input from the user
-        input = _getch();
-
-        // handle the input
-        switch (input) {
-        case UP:
-            current--; // move up
-            if (current < 0) {
-                current = 3; // wrap around
-            }
-            system("cls");
-            break;
-        case DOWN:
-            current++; // move down
-            if (current > 3) {
-                current = 0; // wrap around
-            }
-            system("cls");
-
-            break; 
-        case LEFT:            system("cls");
-
-        case RIGHT:            system("cls");
-
-            // do nothing for left and right keys
-            break;
-        case ENTER:
-            // execute the current option
-            printf("You chose %s\n", menu[current]);
-            if (current == 3) {
-                done = 1; // exit the loop if the user chose Exit
-            }
-			if (current == 0) {
-				system("cls");
-				New();
+	// Draw Slots
+	while (true) {
+		for (int i = 1; i <= MAX_SAVE_SLOTS; i++) {
+			if (i == selected) {
+				printSlot(8, 16, i, Black, Yellow);
 			}
-            break;
-        default:
-            // do nothing for other keys
-            break;
-        }
-    }
-}
-
-void New() {
-	char menu[4][10] = { "Easy", "Normal", "Hard", "Back" };
-	int current = 0; // the index of the current option
-	char input; // the input from the user
-	int done = 0; // a flag to indicate whether the user has chosen to exit
-
-    while (!done) {
-		// display the menu
-		printf("Menu:\n");
-		printf("----\n");
-		printf("Team member: \n");
-        for (int i = 0; i < 4; i++) {
-            if (i == current) {
-				printf("> %s <\n", menu[i]); // highlight the current option
-			}
-            else {
-				printf("  %s  \n", menu[i]); // display the other options normally
+			else {
+				printSlot(8, 16, i, Black, White);
 			}
 		}
-
-		// read the input from the user
-		input = _getch();
-
-		// handle the input
-        switch (input) {
+		int input = _getch();
+		GoToXY(x + 23, 40);
+		setOutputColor(White, White);
+		cout << "                          ";
+		switch (input) {
 		case UP:
-			current--; // move up
-            if (current < 0) {
-				current = 3; // wrap around
+			selected--; 
+			if (selected < 1) {
+				selected = MAX_SAVE_SLOTS; 
 			}
-			system("cls");
 			break;
 		case DOWN:
-			current++; // move down
-            if (current > 3) {
-				current = 0; // wrap around
+			selected++; 
+			if (selected > MAX_SAVE_SLOTS) {
+				selected = 1; 
 			}
-			system("cls");
-
 			break;
-		case LEFT:            system("cls");
+		case LEFT:      break;
 
-		case RIGHT:            system("cls");
+		case RIGHT:     break;
 
-			// do nothing for left and right keys
-			break;
 		case ENTER:
-			// execute the current option
-			printf("You chose %s\n", menu[current]);
-            if (current == 3) {
-				done = 1; // exit the loop if the user chose Exit
+			// Case load success
+			if (SAVEDDATA[selected - 1].exist) {
+				loadData(selected - 1);
+				StartGameLoad();
+				PlayGame();
+				return;
 			}
-			break;
+			// Case Error
+			else {
+				GoToXY(x + 23, 40);
+				setOutputColor(Black, White);
+				cout << "ERROR. PLEASE CHOOSE AGAIN";
+				break;
+			}
+
+		case ESC: // Case return main menu
+			system("cls");
+			menuFunc();
+			return;
+
 		default:
-			// do nothing for other keys
 			break;
 		}
+
 	}
 }
+
+// Save Game menu
+void menuSaveGame() {
+	// Variables
+	InitSavedData();
+	string name;
+	Point box{ 3, 11 };
+	int x = 18;
+	int selected = 1;
+
+	// Draw table
+	system("cls");
+	system("Color F0");
+	SetConsoleOutputCP(65001);
+	setFont(L"Terminal", 15, 18);
+	fixConsoleWindow();
+	GoToXY(x, 3);
+	wcout << u8R"(███████  █████  ██    ██ ███████      ██████   █████  ███    ███ ███████)";
+	GoToXY(x, 3 + 1);
+	wcout << u8R"(██      ██   ██ ██    ██ ██          ██       ██   ██ ████  ████ ██      )";
+	GoToXY(x, 3 + 2);
+	wcout << u8R"(███████ ███████ ██    ██ █████       ██   ███ ███████ ██ ████ ██ █████   )";
+	GoToXY(x, 3 + 3);
+	wcout << u8R"(     ██ ██   ██  ██  ██  ██          ██    ██ ██   ██ ██  ██  ██ ██      )";
+	GoToXY(x, 3 + 4);
+	wcout << u8R"(███████ ██   ██   ████   ███████      ██████  ██   ██ ██      ██ ███████)";
+	GoToXY(x + 23, 9);
+	cout << "PRESS ESC TO RETURN MENU" << endl;
+	drawBox(box, 98, 25, Black);
+	drawBox(box, 98, 3, Black);
+	setOutputColor(Black, White);
+	GoToXY(10, 13);
+	cout << "SLOT";
+	GoToXY(32, 13);
+	cout << "NAME";
+	GoToXY(50, 13);
+	cout << "LEVEL";
+	GoToXY(65, 13);
+	cout << "SCORE";
+	GoToXY(85, 13);
+	cout << "DATE";
+
+	// Draw slots
+	while (true) {
+		for (int i = 1; i <= MAX_SAVE_SLOTS; i++) {
+			if (i == selected) {
+				printSlot(8, 16, i, Black, Yellow);
+			}
+			else {
+				printSlot(8, 16, i, Black, White);
+			}
+		}
+
+		// Input
+		int input = _getch();
+		switch (input) {
+		case UP:
+			selected--; 
+			if (selected < 1) {
+				selected = MAX_SAVE_SLOTS;
+			}
+			break;
+		case DOWN:
+			selected++; 
+			if (selected > MAX_SAVE_SLOTS) {
+				selected = 1;
+			}
+			break;
+		case LEFT:       break;
+
+		case RIGHT:          break;
+
+		case ENTER: // Case Save
+			setOutputColor(Black, White);
+			GoToXY(20, 40);
+			cout << "Enter save name (10 chars): ";
+	
+			getline(cin, name);
+			if (name.length() > 10) {
+				name.resize(10);
+			}
+			saveFile(name, selected);
+			menuFunc();
+			return;
+
+		case ESC: // Case Return Menu
+			menuFunc();
+			return;
+
+		default:
+			break;
+		}
+
+	}
+}
+
+// Print slots
+void printSlot(int x, int y, int slot, int text, int BG) {
+	setOutputColor(text, BG);
+	GoToXY(x - 4, y + slot);
+	for (int i = 0; i < 97; i++) cout << " ";
+	GoToXY(x, y + slot);
+	cout << "SLOT " << slot;
+	GoToXY(x + 22, y + slot);
+	if (SAVEDDATA[slot-1].exist == true) {
+		cout << SAVEDDATA[slot-1].name;
+	}
+	else {
+		cout << "<EMPTY>";
+	}
+	GoToXY(x + 44, y + slot);
+	if (SAVEDDATA[slot-1].exist == true) {
+		cout << SAVEDDATA[slot-1].data.level;
+	}
+	else {
+			cout << "0";
+	}
+	GoToXY(x + 59, y + slot);
+	if (SAVEDDATA[slot-1].exist == true) {
+		cout << SAVEDDATA[slot-1].data.score;
+	}
+	else {
+		cout << "0";
+	}
+	GoToXY(x + 69, y + slot);
+	if (SAVEDDATA[slot-1].exist == true) {
+		cout << SAVEDDATA[slot-1].date;
+	}
+	else {
+		GoToXY(83, y + slot);
+		cout << "<EMPTY>";
+	}
+	
+}
+
