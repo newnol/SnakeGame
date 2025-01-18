@@ -1,4 +1,4 @@
-﻿# Snake Game
+# Snake Game
 
 Đây là dự án trò chơi Snake (Rắn săn mồi) được viết bằng ngôn ngữ C++14.
 
@@ -43,10 +43,20 @@ Khi chạy ứng dụng trên Windows, hãy sử dụng **Console Host** thay v�
 4. Trong mục `Renderer`, chọn `Windows Console Host`.
 5. Nhấn `OK` để lưu thay đổi.
 
-## Thông tin liên hệ
+## 🎥 Video Demo
 
-- **Tác giả:** [Newnol Clolab]
+[![Demo Video](https://img.youtube.com/vi/r-oGDUZ33I0/0.jpg)](https://www.youtube.com/watch?v=r-oGDUZ33I0)
+
+> 📌 **Xem video demo tại đây:** [YouTube Link](https://www.youtube.com/watch?v=r-oGDUZ33I0)
+
+## Thành viên nhóm
+
+- **Phạm Phát Lộc** – MSSV: *23127085*
+- **Ngô Tấn Tài** – MSSV: *23127470*
+- **Biện Xuân An** – MSSV: *23127020*
+- **Văn Ngọc Quý** – MSSV: *23127114*
 
 ## Giấy phép
 
 Dự án này được phát hành dưới giấy phép [MIT].
+
